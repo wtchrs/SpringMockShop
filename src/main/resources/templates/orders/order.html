@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+
+    <div class="p-5 mb-4 bg-light rounded-3 border">
+        <form action="/order" th:object="${orderForm}" method="post">
+
+            <div class="mb-3">
+                <label th:for="member" class="form-label">Member</label>
+                <select name="memberId" id="member" class="form-control"
+                        th:class="${#fields.hasErrors('memberId')} ? 'form-control fieldError' : 'form-control'">
+                    <option value="">Select member</option>
+                    <option th:each="member : ${members}"
+                            th:value="${member.id}" th:text="${member.username}"/>
+                </select>
+                <p class="form-text"
+                   th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}">Incorrect member</p>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="item" class="form-label">Item</label>
+                <select name="itemId" id="item" class="form-control"
+                        th:class="${#fields.hasErrors('itemId')} ? 'form-control fieldError' : 'form-control'">
+                    <option value="">Select item</option>
+                    <option th:each="item : ${items}"
+                            th:value="${item.id}" th:text="${item.name}"/>
+                </select>
+                <p class="form-text"
+                   th:if="${#fields.hasErrors('itemId')}" th:errors="*{itemId}">Incorrect username</p>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="count" class="form-label">Count</label>
+                <input type="number" th:field="*{count}" class="form-control" placeholder="Enter order count"
+                       th:class="${#fields.hasErrors('count')} ? 'form-control fieldError' : 'form-control'">
+                <p class="form-text"
+                   th:if="${#fields.hasErrors('count')}" th:errors="*{count}">Incorrect username</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+</div>
+
+</body>
+</html>

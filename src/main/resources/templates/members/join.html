@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    }
+</style>
+<body>
+
+<div class="container">
+
+    <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+
+    <div class="p-5 mb-4 bg-light rounded-3 border">
+        <form role="form" action="/members/new" th:object="${memberForm}" method="post">
+
+            <div class="mb-3">
+                <label th:for="username" class="form-label">Name</label>
+                <input type="text" th:field="*{username}" class="form-control" placeholder="Enter your username"
+                       th:class="${#fields.hasErrors('username')} ? 'form-control fieldError' : 'form-control'">
+                <p class="form-text"
+                   th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Incorrect username</p>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="city" class="form-label">City</label>
+                <input type="text" th:field="*{city}" class="form-control" placeholder="Enter your city">
+                <p class="form-text"
+                   th:if="${#fields.hasErrors('city')}" th:errors="*{city}">Incorrect city</p>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="street" class="form-label">Street</label>
+                <input type="text" th:field="*{street}" class="form-control" placeholder="Enter your street">
+                <p class="form-text"
+                   th:if="${#fields.hasErrors('street')}" th:errors="*{street}">Incorrect street</p>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="zipcode" class="form-label">Zipcode</label>
+                <input type="text" th:field="*{zipcode}" class="form-control" placeholder="Enter your zipcode">
+                <p class="form-text"
+                   th:if="${#fields.hasErrors('zipcode')}" th:errors="*{zipcode}">Incorrect zipcode</p>
+            </div>
+
+            <br/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    </div>
+
+    <br/>
+    <div th:replace="fragments/footer :: footer"></div>
+
+</div>
+</body>
+</html>

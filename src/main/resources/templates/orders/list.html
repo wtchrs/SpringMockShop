@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+
+    <div class="p-5 mb-4 bg-light rounded-3 border">
+
+        <form th:object="${orderSearch}" method="get" class="form-inline">
+            <div class="row g-3">
+                <div class="col-auto px-1">
+                    <input type="text" th:field="*{username}" class="form-control" placeholder="Enter username"
+                           th:class="${#fields.hasErrors('username')} ? 'form-control fieldError' : 'form-control'">
+                </div>
+
+                <div class="col-auto px-1">
+                    <select th:field="*{status}" class="form-control"
+                            th:class="${#fields.hasErrors('status')} ? 'form-control fieldError' : 'form-control'">
+                        <option value="">Select order status</option>
+                        <option th:each="value : ${statusValues}"
+                                th:value="${value}" th:text="${value}"></option>
+                    </select>
+                </div>
+
+                <div class="col-auto px-1">
+                    <button type="submit" class="col-auto btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Member</th>
+                <th scope="col">Item List</th>
+                <th scope="col">Price</th>
+                <th scope="col">Count</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">Order Date</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.id}"></td>
+                <td><a th:href="@{/members/{id} (id=${order.member.id})}" th:text="${order.member.username}"></a></td>
+                <td class="m-0 p-0">
+                    <table class="table mb-0">
+                        <tr th:each="orderItem : ${order.orderItems}">
+                            <td>
+                                <a th:href="@{/items/{id} (id=${orderItem.item.id})}"
+                                   th:text="${orderItem.item.name}"></a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="m-0 p-0">
+                    <table class="table mb-0">
+                        <tr th:each="orderItem : ${order.orderItems}">
+                            <td th:text="${orderItem.orderPrice}"></td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="m-0 p-0">
+                    <table class="table mb-0">
+                        <tr th:each="orderItem : ${order.orderItems}">
+                            <td th:text="${orderItem.count}"></td>
+                        </tr>
+                    </table>
+                </td>
+                <td th:text="${order.getTotalPrice()}"></td>
+                <td th:text="${order.orderDateTime}"></td>
+                <td>
+                    <a href="#" th:href="'javascript:cancel(' + ${order.id} + ')'"
+                       th:if="${order.status.name() == 'ORDER'}">
+                        <button class="btn btn-danger">Cancel</button>
+                    </a>
+                    <a href="#" th:if="${order.status.name() != 'ORDER'}">
+                        <button class="btn btn-secondary" disabled>Canceled</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+</body>
+<script>
+    function cancel(id) {
+        let form = document.createElement("form")
+        form.setAttribute("method", "post")
+        form.setAttribute("action", "/orders/" + id + "/cancel")
+        document.body.appendChild(form)
+        form.submit()
+    }
+</script>
+</html>

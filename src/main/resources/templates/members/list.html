@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+
+    <div class="p-5 mb-4 bg-light rounded-3 border">
+        <table class="table table-striped">
+
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>City</th>
+                <th>Street</th>
+                <th>Zipcode</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="member : ${members}">
+                <td th:text="${member.id}"></td>
+                <td th:text="${member.username}"></td>
+                <td th:text="${member.address?.city}"></td>
+                <td th:text="${member.address?.street}"></td>
+                <td th:text="${member.address?.zipcode}"></td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+<div class="container">
+
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <div class="p-5 mb-4 bg-light rounded-3 border">
+<!--    <div class="jumbotron p-5 mb-4 bg-light rounded-3 border">-->
+        <h1>HELLO SHOP</h1>
+        <p class="lead">Member functions</p>
+        <p>
+            <a class="btn btn-lg btn-secondary" href="/members/new">Join member</a>
+            <a class="btn btn-lg btn-secondary" href="/members">Member list</a>
+        </p>
+        <p class="lead">Item functions</p>
+        <p>
+            <a class="btn btn-lg btn-dark" href="/items/new">Register item</a>
+            <a class="btn btn-lg btn-dark" href="/items">Item list</a>
+        </p>
+        <p class="lead">Order functions</p>
+        <p>
+            <a class="btn btn-lg btn-info" href="/order">Order item</a>
+            <a class="btn btn-lg btn-info" href="/orders">Order list</a>
+        </p>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"/>
+
+</div>
+
+</body>
+</html>

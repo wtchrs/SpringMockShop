@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    }
+</style>
+<body>
+
+<div class="container">
+
+    <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+
+    <div class="p-5 mb-4 bg-light rounded-3 border">
+        <form th:action="@{/items/new}" th:object="${bookForm}" method="post">
+
+            <div class="mb-3">
+                <label th:for="name" class="form-label">Name</label>
+                <input type="text" th:field="*{name}" class="form-control" placeholder="Enter item name"
+                       th:class="${#fields.hasErrors('name')} ? 'form-control fieldError' : 'form-control'">
+                <p class="form-text" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect item name</p>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="price" class="form-label">Price</label>
+                <input type="number" th:field="*{price}" class="form-control" placeholder="Enter item price"
+                       th:class="${#fields.hasErrors('price')} ? 'form-control fieldError' : 'form-control'">
+                <p class="form-text" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Incorrect item price</p>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="stockQuantity" class="form-label">Stocks</label>
+                <input type="number" th:field="*{stockQuantity}" class="form-control" placeholder="Enter item stocks"
+                       th:class="${#fields.hasErrors('stockQuantity')} ? 'form-control fieldError' : 'form-control'">
+                <p class="form-text"
+                   th:if="${#fields.hasErrors('stockQuantity')}" th:errors="*{stockQuantity}">Incorrect item stocks</p>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="author" class="form-label">Author</label>
+                <input type="text" th:field="*{author}" class="form-control" placeholder="Enter book author"
+                       th:class="${#fields.hasErrors('author')} ? 'form-control fieldError' : 'form-control'">
+                <p class="form-text"
+                   th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Incorrect book author</p>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="isbn" class="form-label">ISBN</label>
+                <input type="text" th:field="*{isbn}" class="form-control" placeholder="Enter book isbn"
+                       th:class="${#fields.hasErrors('isbn')} ? 'form-control fieldError' : 'form-control'">
+                <p class="form-text" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}">Incorrect book isbn</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+</div>
+
+</body>
+</html>
