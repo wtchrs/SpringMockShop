@@ -1,23 +1,23 @@
 # SpringMockShop
 
-### Stack
+## Stack
 - Spring 5
 - Spring Boot 2.7
 - Thymeleaf 3
 - JPA
 - H2 Database
 
-### Getting started
+## Getting started
 
 Install JDK 17, or change `sourceCompatibility` setting in `build.gradle` before build.
 
-###### Build:
+#### Build:
 
 ```shell
 ./gradlew build
 ```
 
-###### Run:
+#### Run:
 
 ```shell
 ./gradlew bootRun
