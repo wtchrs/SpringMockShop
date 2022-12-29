@@ -3,6 +3,7 @@ package wtchrs.SpringMockShop.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wtchrs.SpringMockShop.domain.Address;
 import wtchrs.SpringMockShop.domain.Member;
 import wtchrs.SpringMockShop.repository.MemberRepository;
 
@@ -33,5 +34,12 @@ public class MemberService {
 
     public Member getMember(Long id) {
         return memberRepository.findById(id);
+    }
+
+    @Transactional
+    public void update(Long memberId, String username, Address address) {
+        Member findMember = memberRepository.findById(memberId);
+        findMember.setUsername(username);
+        if (address != null) findMember.setAddress(address);
     }
 }

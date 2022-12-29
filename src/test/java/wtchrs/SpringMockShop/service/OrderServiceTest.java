@@ -27,9 +27,7 @@ class OrderServiceTest {
 
     @Test
     void order() {
-        Member member = new Member();
-        member.setUsername("member");
-        member.setAddress(new Address("Seoul", "My-street", "12345"));
+        Member member = new Member("member", new Address("Seoul", "My-street", "12345"));
         memberService.join(member);
 
         int initialStock = 100;
@@ -46,14 +44,11 @@ class OrderServiceTest {
         assertThat(result.getStatus()).isEqualTo(OrderStatus.ORDER);
         assertThat(result.getTotalPrice()).isEqualTo(book.getPrice() * orderCount);
         assertThat(book.getStockQuantity()).isEqualTo(initialStock - orderCount);
-
     }
 
     @Test
     void cancelOrder() {
-        Member member = new Member();
-        member.setUsername("member");
-        member.setAddress(new Address("Seoul", "My-street", "12345"));
+        Member member = new Member("member", new Address("Seoul", "My-street", "12345"));
         memberService.join(member);
 
         int initialStock = 100;
@@ -73,9 +68,7 @@ class OrderServiceTest {
 
     @Test
     public void excessItemStockQuantity() {
-        Member member = new Member();
-        member.setUsername("member");
-        member.setAddress(new Address("Seoul", "My-street", "12345"));
+        Member member = new Member("member", new Address("Seoul", "My-street", "12345"));
         memberService.join(member);
 
         int initialStock = 100;

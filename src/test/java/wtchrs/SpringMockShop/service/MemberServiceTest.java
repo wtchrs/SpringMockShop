@@ -20,9 +20,7 @@ class MemberServiceTest {
 
     @Test
     public void memberJoin() {
-        Member member = new Member();
-        member.setUsername("member");
-        member.setAddress(new Address("Seoul-si", "xxx street", "12345"));
+        Member member = new Member("member", new Address("Seoul-si", "xxx street", "12345"));
 
         Long id = memberService.join(member);
         Member findMember = memberService.getMember(id);
@@ -32,10 +30,8 @@ class MemberServiceTest {
 
     @Test
     public void duplicateMemberJoin() {
-        Member member1 = new Member();
-        member1.setUsername("member");
-        Member member2 = new Member();
-        member2.setUsername("member");
+        Member member1 = new Member("member", null);
+        Member member2 = new Member("member", null);
 
         memberService.join(member1);
         assertThrows(IllegalStateException.class, () -> memberService.join(member2));

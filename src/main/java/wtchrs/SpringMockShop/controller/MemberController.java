@@ -28,9 +28,8 @@ public class MemberController {
     public String joinProcess(@ModelAttribute("memberForm") @Validated MemberForm memberForm, Errors errors) {
         if (errors.hasErrors()) return "members/join";
 
-        Member member = new Member();
-        member.setUsername(memberForm.getUsername());
-        member.setAddress(new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode()));
+        Address address = new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode());
+        Member member = new Member(memberForm.getUsername(), address);
 
         memberService.join(member);
 

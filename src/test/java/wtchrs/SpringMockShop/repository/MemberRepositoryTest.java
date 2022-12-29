@@ -19,8 +19,7 @@ class MemberRepositoryTest {
     @Transactional
     @Rollback(false)
     void saveAndFind() {
-        Member member = new Member();
-        member.setUsername("hello");
+        Member member = new Member("hello", null);
         Long saveId = memberRepository.save(member);
 
         Member findMember = memberRepository.findById(saveId);
