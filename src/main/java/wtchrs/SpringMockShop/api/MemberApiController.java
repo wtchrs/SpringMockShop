@@ -1,8 +1,8 @@
 package wtchrs.SpringMockShop.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +11,27 @@ import wtchrs.SpringMockShop.domain.Member;
 import wtchrs.SpringMockShop.service.MemberService;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class MemberApiController {
 
     private final MemberService memberService;
+
+    /**
+     * When some member has order information, it happens stack overflow with circular dependency of Member and Order.
+     */
+    @GetMapping("/api/v1/members")
+    public List<Member> lookupMembersV1() {
+        return memberService.getAllMembers();
+    }
+
+    @GetMapping("/api/v2/members")
+    public LookupResult<MemberLookup> lookupMembersV2() {
+        List<MemberLookup> memberLookups = memberService.getAllMembers().stream().map(MemberLookup::of).toList();
+        return new LookupResult<>(memberLookups);
+    }
 
     /**
      * Member entity is used as the request body. When the entity spec is changed, the api spec is also changed. It may
@@ -48,7 +63,30 @@ public class MemberApiController {
     }
 
     @Data
-    static class CreateMemberRequest {
+    private static class LookupResult<T> {
+        private int count;
+        private List<T> data;
+
+        public LookupResult(List<T> data) {
+            this.data = data;
+            this.count = data.size();
+        }
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class MemberLookup {
+        private Long id;
+        private String name;
+        private Address address;
+
+        public static MemberLookup of(Member member) {
+            return new MemberLookup(member.getId(), member.getUsername(), member.getAddress());
+        }
+    }
+
+    @Data
+    private static class CreateMemberRequest {
         @NotEmpty
         private String name;
         private Address address;
@@ -56,12 +94,12 @@ public class MemberApiController {
 
     @Data
     @AllArgsConstructor
-    static class CreateMemberResponse {
+    private static class CreateMemberResponse {
         private Long id;
     }
 
     @Data
-    static class UpdateMemberRequest {
+    private static class UpdateMemberRequest {
         @NotEmpty
         private String name;
         private Address address;
@@ -69,7 +107,7 @@ public class MemberApiController {
 
     @Data
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class UpdateMemberResponse {
+    private static class UpdateMemberResponse {
         private Long id;
         private String name;
         private Address address;
