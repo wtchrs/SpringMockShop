@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"></head>
 <body>
-<div class="container">
+<div class="container-sm">
     <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
 
     <div class="p-5 mb-4 bg-light rounded-3 border">
@@ -34,9 +34,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Member</th>
-                <th scope="col">Item List</th>
-                <th scope="col">Price</th>
-                <th scope="col">Count</th>
+                <th scope="col">Item List / Price / Count</th>
                 <th scope="col">Total Price</th>
                 <th scope="col">Order Date</th>
                 <th scope="col"></th>
@@ -50,23 +48,8 @@
                 <td class="m-0 p-0">
                     <table class="table mb-0">
                         <tr th:each="orderItem : ${order.orderItems}">
-                            <td>
-                                <a th:href="@{/items/{id} (id=${orderItem.item.id})}"
-                                   th:text="${orderItem.item.name}"></a>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td class="m-0 p-0">
-                    <table class="table mb-0">
-                        <tr th:each="orderItem : ${order.orderItems}">
+                            <td th:text="${orderItem.item.name}"></td>
                             <td th:text="${orderItem.orderPrice}"></td>
-                        </tr>
-                    </table>
-                </td>
-                <td class="m-0 p-0">
-                    <table class="table mb-0">
-                        <tr th:each="orderItem : ${order.orderItems}">
                             <td th:text="${orderItem.count}"></td>
                         </tr>
                     </table>

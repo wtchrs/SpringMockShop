@@ -31,9 +31,8 @@ public class OrderService {
             return OrderItem.createOrderItem(item, item.getPrice(), itemMap.get(itemId));
         }).toList();
 
-        Delivery delivery = new Delivery();
-        delivery.setAddress(findMember.getAddress());
-        delivery.setStatus(DeliveryStatus.READY);
+        Delivery delivery = new Delivery(findMember.getAddress());
+        delivery.initStatus();
 
         Order order = Order.createOrder(findMember, delivery, orderItems);
         orderRepository.save(order);
