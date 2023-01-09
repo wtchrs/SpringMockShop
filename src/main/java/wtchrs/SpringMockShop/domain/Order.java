@@ -3,7 +3,6 @@ package wtchrs.SpringMockShop.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,7 +13,6 @@ import java.util.List;
 @Table(name = "orders")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 public class Order {
 
     @Id @GeneratedValue
@@ -44,8 +42,8 @@ public class Order {
         for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
         }
-        order.setStatus(OrderStatus.ORDER);
-        order.setOrderDateTime(LocalDateTime.now());
+        order.status = OrderStatus.ORDER;
+        order.orderDateTime = LocalDateTime.now();
         return order;
     }
 
@@ -68,7 +66,7 @@ public class Order {
         if (delivery.getStatus() == DeliveryStatus.COMP) throw new IllegalStateException("Already delivered order.");
         if (this.status == OrderStatus.CANCEL) throw new IllegalStateException("Already canceled order.");
 
-        this.setStatus(OrderStatus.CANCEL);
+        this.status = OrderStatus.CANCEL;
         for (OrderItem orderItem : orderItems) {
             orderItem.cancel();
         }

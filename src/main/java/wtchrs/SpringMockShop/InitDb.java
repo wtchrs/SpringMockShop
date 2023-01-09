@@ -5,11 +5,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import wtchrs.SpringMockShop.domain.*;
 import wtchrs.SpringMockShop.domain.item.Book;
+import wtchrs.SpringMockShop.service.ItemService;
+import wtchrs.SpringMockShop.service.MemberService;
+import wtchrs.SpringMockShop.service.OrderService;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -27,8 +31,9 @@ public class InitDb {
     @RequiredArgsConstructor
     static class InitService {
 
-        @PersistenceContext
-        private final EntityManager em;
+        private final MemberService memberService;
+        private final ItemService itemService;
+        private final OrderService orderService;
 
         public void dbInit1() {
             Book jpaBook1 = new Book("JPA book 1", 10000, 100, "Author", "1111111111111111");
@@ -36,31 +41,19 @@ public class InitDb {
             Book springBook1 = new Book("Spring book 1", 15000, 100, "Author", "2222222222222222");
             Book springBook2 = new Book("Spring book 2", 12000, 50, "Author", "2222222233333333");
 
-            em.persist(jpaBook1);
-            em.persist(jpaBook2);
-            em.persist(springBook1);
-            em.persist(springBook2);
+            itemService.addItem(jpaBook1);
+            itemService.addItem(jpaBook2);
+            itemService.addItem(springBook1);
+            itemService.addItem(springBook2);
 
             Member member1 = new Member("userA", new Address("Seoul", "A street", "12345"));
             Member member2 = new Member("userB", new Address("Seoul", "B street", "54321"));
 
-            em.persist(member1);
-            em.persist(member2);
+            memberService.join(member1);
+            memberService.join(member2);
 
-            OrderItem orderItem1 = OrderItem.createOrderItem(jpaBook1, jpaBook1.getPrice(), 5);
-            OrderItem orderItem2 = OrderItem.createOrderItem(jpaBook2, jpaBook2.getPrice(), 5);
-
-            Order order1 = Order.createOrder(member1, new Delivery(member1.getAddress()),
-                                             List.of(orderItem1, orderItem2));
-
-            OrderItem orderItem3 = OrderItem.createOrderItem(springBook1, springBook1.getPrice(), 5);
-            OrderItem orderItem4 = OrderItem.createOrderItem(springBook2, springBook2.getPrice(), 5);
-
-            Order order2 = Order.createOrder(member2, new Delivery(member2.getAddress()),
-                                             List.of(orderItem3, orderItem4));
-
-            em.persist(order1);
-            em.persist(order2);
+            orderService.order(member1.getId(), Map.of(jpaBook1.getId(), 6, jpaBook2.getId(), 5));
+            orderService.order(member2.getId(), Map.of(springBook1.getId(), 10, springBook2.getId(), 9));
         }
     }
 }

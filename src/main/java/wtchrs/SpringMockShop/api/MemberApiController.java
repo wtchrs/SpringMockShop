@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import wtchrs.SpringMockShop.domain.Address;
 import wtchrs.SpringMockShop.domain.Member;
+import wtchrs.SpringMockShop.repository.LookupResult;
 import wtchrs.SpringMockShop.service.MemberService;
 
 import javax.validation.constraints.NotEmpty;
@@ -60,17 +61,6 @@ public class MemberApiController {
         UpdateMemberResponse response = new UpdateMemberResponse(memberId, member.getUsername());
         if (request.address != null) response.setAddress(member.getAddress());
         return response;
-    }
-
-    @Data
-    private static class LookupResult<T> {
-        private int count;
-        private List<T> data;
-
-        public LookupResult(List<T> data) {
-            this.data = data;
-            this.count = data.size();
-        }
     }
 
     @Data

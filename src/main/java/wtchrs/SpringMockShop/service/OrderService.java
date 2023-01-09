@@ -9,6 +9,8 @@ import wtchrs.SpringMockShop.repository.ItemRepository;
 import wtchrs.SpringMockShop.repository.MemberRepository;
 import wtchrs.SpringMockShop.repository.OrderRepository;
 import wtchrs.SpringMockShop.repository.OrderSearch;
+import wtchrs.SpringMockShop.repository.order.simplequery.SimpleOrderQuery;
+import wtchrs.SpringMockShop.repository.order.simplequery.SimpleOrderQueryRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,7 @@ import java.util.Map;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final SimpleOrderQueryRepository simpleOrderQueryRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
 
@@ -54,7 +57,15 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+    public List<Order> getAllWithMemberDelivery() {
+        return orderRepository.findAllWithMemberDelivery();
+    }
+
     public List<Order> searchOrders(OrderSearch orderSearch) {
         return orderRepository.findAllByString(orderSearch);
+    }
+
+    public List<SimpleOrderQuery> getAllOrderDto() {
+        return simpleOrderQueryRepository.findAllAsDto();
     }
 }
