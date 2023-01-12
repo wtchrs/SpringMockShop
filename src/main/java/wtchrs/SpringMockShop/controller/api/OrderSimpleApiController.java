@@ -1,4 +1,4 @@
-package wtchrs.SpringMockShop.api;
+package wtchrs.SpringMockShop.controller.api;
 
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +14,7 @@ import java.util.List;
 
 /**
  * Deal with XToOne relationships.
- * Order
- * -> Member (ManyToOne)
- * -> Delivery (OneToOne)
+ * Order -> Member (ManyToOne), Order -> Delivery (OneToOne)
  */
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +23,7 @@ public class OrderSimpleApiController {
     private final OrderService orderService;
 
     /**
-     * Enable replacing hibernate proxies to null when it converted to json.
+     * Enable replacing hibernate proxies in the entity instance to null when it converted to json.
      *
      * @return hibernate5 module setting.
      */
@@ -35,10 +33,9 @@ public class OrderSimpleApiController {
     }
 
     /**
-     * Return all orders. When converting the result to json, it may fail with stack overflow because of circular
-     * dependency. To avoid it, add {@link com.fasterxml.jackson.annotation.JsonIgnore} annotation at {@code orders} in
-     * {@link wtchrs.SpringMockShop.domain.Member} and {@code order} in {@link wtchrs.SpringMockShop.domain.Delivery}.
-     * It has N+1 problem when lazy loading.
+     * Return all orders. When converting the result to json, it may fail with stack overflow because of the
+     * bidirectional relationships. To avoid it, add {@link com.fasterxml.jackson.annotation.JsonIgnore} annotation at
+     * the fields of bidirectional relationships in referenced entity classes. It has N+1 problem when lazy loading.
      *
      * @return A list of orders. Do not expose an entity as an api. It is better to return a wrapper class of the list
      * with DTO instances.
@@ -48,7 +45,7 @@ public class OrderSimpleApiController {
     public List<Order> ordersV1() {
         List<Order> orders = orderService.getAllOrders();
         for (Order order : orders) {
-            order.getMember().getUsername(); // Lazy load (N+1 Problem)
+            order.getMember().getUsername(); // Lazy loading
             order.getDelivery().getAddress();
         }
 
@@ -64,7 +61,7 @@ public class OrderSimpleApiController {
     @GetMapping("/api/v2/simple-orders")
     public List<SimpleOrderQuery> ordersV2() {
         List<Order> orders = orderService.getAllOrders();
-        return orders.stream().map(SimpleOrderQuery::of).toList(); // Lazy load (N+1 Problem)
+        return orders.stream().map(SimpleOrderQuery::of).toList(); // Lazy loading
     }
 
     /**

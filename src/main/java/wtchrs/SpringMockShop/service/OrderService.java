@@ -61,11 +61,19 @@ public class OrderService {
         return orderRepository.findAllWithMemberDelivery();
     }
 
+    public List<Order> getAllWithMemberDelivery(int offset, int limit) {
+        return orderRepository.findAllWithMemberDelivery(offset, limit);
+    }
+
     public List<Order> searchOrders(OrderSearch orderSearch) {
         return orderRepository.findAllByString(orderSearch);
     }
 
     public List<SimpleOrderQuery> getAllOrderDto() {
         return simpleOrderQueryRepository.findAllAsDto();
+    }
+
+    public List<Order> getAllWithItems() {
+        return orderRepository.findAllWithItems();
     }
 }

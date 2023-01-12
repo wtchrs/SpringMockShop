@@ -1,4 +1,4 @@
-package wtchrs.SpringMockShop.api;
+package wtchrs.SpringMockShop.controller.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
